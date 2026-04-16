@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace RPNEvaluator
 {
@@ -28,8 +29,13 @@ namespace RPNEvaluator
                 }
 
                 // case 3: if token is an operator, compute
-                else
+                else if (IsOperator(token))
                 {
+                    // if not enough tokens error case
+                    if (stack.Count < 2)
+                    {
+                        throw new InvalidOperationException("Not enough tokens");
+                    }
                     // pop the values from stack
                     int b = stack.Pop();
                     int a = stack.Pop();
@@ -53,9 +59,19 @@ namespace RPNEvaluator
                             }
                             stack.Push(a % b);
                             break;
-                        default: throw new Exception("Invalid token"); // error case
+                        default: throw new Exception("Invalid token"); // invalid operator error case
                     }
                 }
+                else
+                {
+                    throw new ArgumentException("Invalid token");
+                }
+            }
+            
+            // if not only one result remains
+            if (stack.Count != 1)
+            {
+                throw new InvalidOperationException("Invalid result");
             }
 
             // return the result which should be the only value left
@@ -85,8 +101,14 @@ namespace RPNEvaluator
                 }
 
                 // case 3: if token is an operator, compute
-                else
+                else if (IsOperator(token))
                 {
+                    // if not enough tokens error case
+                    if (stack.Count < 2)
+                    {
+                        throw new InvalidOperationException("Not enough tokens");
+                    }
+
                     float b = stack.Pop();
                     float a = stack.Pop();
 
@@ -110,11 +132,19 @@ namespace RPNEvaluator
                             stack.Push(a % b);
                             break;
                         default:
-                            throw new Exception("Invalid token");
+                            throw new Exception("Invalid token"); // invalid operator error case
                     }
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid token");
                 }
             }
 
+            if (stack.Count != 1)
+            {
+                throw new InvalidOperationException("Invalid result");
+            }
             // return the result which should be the only value left
             return stack.Pop();
         }
@@ -131,6 +161,12 @@ namespace RPNEvaluator
 
             // return the float evaluation method
             return Evaluatef(expr, floatVars);
+        }
+
+        // private method used in order to check if a token is an operator
+        private static bool IsOperator(string token)
+        {
+            return token == "+" || token == "-" || token == "*" || token == "/" || token == "%";
         }
     }
 }
