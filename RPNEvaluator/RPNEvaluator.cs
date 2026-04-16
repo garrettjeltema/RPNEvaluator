@@ -118,5 +118,22 @@ namespace RPNEvaluator
             // return the result which should be the only value left
             return stack.Pop();
         }
+
+        public static float Evaluatef(string expr, Dictionary<string, int> vars)
+        {
+            // convert integer dictionary into float dictionary
+            var floatVars = new Dictionary<string, float>();
+
+            if (vars != null)
+            {
+                foreach (var kv in vars)
+                {
+                    floatVars[kv.Key] = kv.Value; // convert ints to floats
+                }
+            }
+
+            // return the float evaluation method
+            return Evaluatef(expr, floatVars);
+        }
     }
 }
