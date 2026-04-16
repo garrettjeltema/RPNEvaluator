@@ -22,7 +22,7 @@ namespace RPNEvaluator
                 }
 
                 // case 2: if token is a variable look in dictionary
-                else if (vars != null && vars.ContainsKey(token))
+                else if (vars.ContainsKey(token))
                 {
                     stack.Push(vars[token]);
                 }
@@ -79,7 +79,7 @@ namespace RPNEvaluator
                 }
 
                 // case 2: if token is a variable look in dictionary
-                else if (vars != null && vars.ContainsKey(token))
+                else if (vars.ContainsKey(token))
                 {
                     stack.Push(vars[token]);
                 }
@@ -124,12 +124,9 @@ namespace RPNEvaluator
             // convert integer dictionary into float dictionary
             var floatVars = new Dictionary<string, float>();
 
-            if (vars != null)
+            foreach (var kv in vars)
             {
-                foreach (var kv in vars)
-                {
-                    floatVars[kv.Key] = kv.Value; // convert ints to floats
-                }
+                floatVars[kv.Key] = kv.Value; // convert ints to floats
             }
 
             // return the float evaluation method
