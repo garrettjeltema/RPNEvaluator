@@ -61,5 +61,62 @@ namespace RPNEvaluator
             // return the result which should be the only value left
             return stack.Pop();
         }
+
+        public static float Evaluatef(string expr, Dictionary<string, float> vars)
+        {
+            // initialize stack
+            var stack = new Stack<float>();
+
+            // initialize input string into tokens
+            var tokens = expr.Split(' ');
+
+            foreach (var token in tokens)
+            {
+                // case 1: if token is a float push onto stack
+                if (float.TryParse(token, out float num))
+                {
+                    stack.Push(num);
+                }
+
+                // case 2: if token is a variable look in dictionary
+                else if (vars != null && vars.ContainsKey(token))
+                {
+                    stack.Push(vars[token]);
+                }
+
+                // case 3: if token is an operator, compute
+                else
+                {
+                    float b = stack.Pop();
+                    float a = stack.Pop();
+
+                    switch (token)
+                    {
+                        case "+": stack.Push(a + b); break; // addition case
+                        case "-": stack.Push(a - b); break; // subtraction case
+                        case "*": stack.Push(a * b); break; // multiplication case
+                        case "/":                           // division case
+                            if (b == 0.0f)
+                            {
+                                throw new DivideByZeroException("Attempted to divide by zero");
+                            }
+                            stack.Push(a / b);
+                            break;
+                        case "%":                           // modulus case
+                            if (b == 0.0f)
+                            {
+                                throw new DivideByZeroException("Attempted to modulo by zero");
+                            }
+                            stack.Push(a % b);
+                            break;
+                        default:
+                            throw new Exception("Invalid token");
+                    }
+                }
+            }
+
+            // return the result which should be the only value left
+            return stack.Pop();
+        }
     }
 }
