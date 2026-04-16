@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="../RPNEvaluator.Tests/RPNEvaluator.Tests/RPNEvaluator.Tests.csproj" />
+  <Project Path="../RPNEvaluator.Tests/RPNEvaluator.Tests/RPNTest.csproj" />
   <Project Path="RPNEvaluator/RPNEvaluator.csproj" />
 </Solution>
